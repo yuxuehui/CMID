@@ -7,15 +7,15 @@ class Encoder(nn.Module):
     def __init__(self, obs_shape, cfg, expert_feature_dim=None):
         super().__init__()
 
-        assert len(obs_shape) == 3
+        # assert len(obs_shape) == 3
         self.num_layers = cfg.num_conv_layers
         self.num_filters = cfg.num_filters
         self.output_logits = False
         self.feature_dim = cfg.feature_dim
 
-        self.convs = nn.ModuleList([nn.Conv2d(obs_shape[0], self.num_filters, 3, stride=2)])
+        self.convs = nn.ModuleList([nn.Linear(obs_shape[0], self.num_filters, 3,)])
         for i in range(1, self.num_layers):
-            self.convs.extend([nn.Conv2d(self.num_filters, self.num_filters, 3, stride=1)])
+            self.convs.extend([nn.Linear(self.num_filters, self.num_filters, 3)])
 
         # get output shape
         x = torch.randn(*obs_shape).unsqueeze(0)

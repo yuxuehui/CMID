@@ -6,13 +6,12 @@ import numpy as np
 import utils
 from logger import Logger
 from replay_buffer import ReplayBuffer
-from video import VideoRecorder
 import algorithms
 from arguments import parse_args
 
 torch.backends.cudnn.benchmark = True
 
-def make_env(cfg, pixels=True):
+def make_env(cfg, pixels=False):
     # per dreamer: https://github.com/danijar/dreamer/blob/02f0210f5991c7710826ca7881f19c64a012290c/wrappers.py#L26
     camera_id = 2 if cfg.domain_name == 'quadruped' else 0
 
@@ -59,29 +58,37 @@ class Workspace(object):
         self.train_env = make_env(cfg)
         self.env = self.train_env
 
-        # set up correlated environments
-        if self.cfg.correlated_with_colour:
-            original_rgb = np.copy(self.env.physics.model.mat_rgba)[:, :3]
-            self.colourA = np.copy(original_rgb)
-            self.colourB = np.copy(original_rgb)
-            self.colourA[1, :] = [0., 0., 1.0]
-            self.colourB[1, :] = [0., 1.0, 0.]
-            self.probabilities = [[self.cfg.correlation_probability, 1-self.cfg.correlation_probability], [1-self.cfg.correlation_probability, self.cfg.correlation_probability]]
-            self.test_probabilities = [[self.cfg.test_correlation_probability, 1-self.cfg.test_correlation_probability], [1-self.cfg.test_correlation_probability, self.cfg.test_correlation_probability]]
-            xml_pathA = os.path.join("world_models", f"{cfg.domain_name}_A.xml")
-            envA = make_env(cfg)
-            envA.physics.reload_from_xml_path(xml_pathA)
-            xml_pathB = os.path.join("world_models", f"{cfg.domain_name}_B.xml")
-            envB = make_env(cfg)
-            envB.physics.reload_from_xml_path(xml_pathB)
-            self.envs = [envA, envB]
-            object = np.random.choice([0, 1])
-            self.current_colour = eval(np.random.choice(["self.colourA", "self.colourB"], p=self.probabilities[object]))
-            self.env = self.envs[object]
-            self.env.reset(colour=self.current_colour)
-        else:
-            self.envs = False
-            self.env.reset()
+        # # set up correlated environments
+        # if self.cfg.correlated_with_colour:
+        #     original_rgb = np.copy(self.env.physics.model.mat_rgba)[:, :3]
+        #     self.colourA = np.copy(original_rgb)
+        #     self.colourB = np.copy(original_rgb)
+        #     self.colourA[1, :] = [0., 0., 1.0]
+        #     self.colourB[1, :] = [0., 1.0, 0.]
+        #     self.probabilities = [[self.cfg.correlation_probability, 1-self.cfg.correlation_probability], [1-self.cfg.correlation_probability, self.cfg.correlation_probability]]
+        #     self.test_probabilities = [[self.cfg.test_correlation_probability, 1-self.cfg.test_correlation_probability], [1-self.cfg.test_correlation_probability, self.cfg.test_correlation_probability]]
+        #     xml_pathA = os.path.join("world_models", f"{cfg.domain_name}_A.xml")
+        #     envA = make_env(cfg)
+        #     envA.physics.reload_from_xml_path(xml_pathA)
+        #     xml_pathB = os.path.join("world_models", f"{cfg.domain_name}_B.xml")
+        #     envB = make_env(cfg)
+        #     envB.physics.reload_from_xml_path(xml_pathB)
+        #     self.envs = [envA, envB]
+        #     object = np.random.choice([0, 1])
+        #     self.current_colour = eval(np.random.choice(["self.colourA", "self.colourB"], p=self.probabilities[object]))
+        #     self.env = self.envs[object]
+        #     self.env.reset(colour=self.current_colour)
+        # else:
+        #     self.envs = False
+        #     self.env.reset()
+
+        xml_pathA = os.path.join("world_models", f"{cfg.domain_name}_A.xml")
+        envA = make_env(cfg)
+        envA.physics.reload_from_xml_path(xml_pathA)
+        xml_pathB = os.path.join("world_models", f"{cfg.domain_name}_B.xml")
+        envB = make_env(cfg)
+        envB.physics.reload_from_xml_path(xml_pathB)
+        
 
         action_range = [
             float(self.env.action_space.low.min()),
@@ -95,9 +102,7 @@ class Workspace(object):
                                           self.cfg.replay_buffer_capacity,
                                           self.cfg.image_pad, self.device,
                                           True if self.cfg.algorithm=='svea_cmid' else False)
-
-        self.video_recorder = VideoRecorder(self.work_dir if cfg.save_video else None)
-
+                                          
         self.step = 0
 
     def evaluate(self):
@@ -108,7 +113,7 @@ class Workspace(object):
 
         average_episode_reward = 0
 
-        self.video_recorder.init(enabled=True)
+        # self.video_recorder.init(enabled=True)
 
         for episode in range(self.cfg.num_eval_episodes):
             if eval_envs:
@@ -130,12 +135,12 @@ class Workspace(object):
 
                 obs, reward, done, info = eval_env.step(action)
 
-                self.video_recorder.record(eval_env)
+                # self.video_recorder.record(eval_env)
                 episode_reward += reward
                 episode_step += 1
 
             average_episode_reward += episode_reward
-            self.video_recorder.save(f'{self.step}.mp4')
+            # self.video_recorder.save(f'{self.step}.mp4')
 
         average_episode_reward /= self.cfg.num_eval_episodes
         self.logger.log('eval/episode_reward', average_episode_reward, self.step)
@@ -147,6 +152,7 @@ class Workspace(object):
         start_time = time.time()
 
         while self.step <= (total_num_steps + 1):
+            # print("self.step:", self.step, done)
             if done:
                 if self.step > 0:
                     self.logger.log('train/duration', time.time() - start_time, self.step)
@@ -186,6 +192,7 @@ class Workspace(object):
 
             # run training update
             if self.step >= self.cfg.num_seed_steps:
+                # print("="*5, "Training!!", self.step, self.cfg.num_seed_steps)
                 for _ in range(self.cfg.num_train_iters):
                     self.agent.update(self.replay_buffer, self.logger, self.step)
 

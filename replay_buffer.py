@@ -68,7 +68,8 @@ class ReplayBuffer(object):
         rewards = torch.as_tensor(self.rewards[idxs], device=self.device)
         not_dones_no_max = torch.as_tensor(self.not_dones_no_max[idxs], device=self.device)
 
-        return obses, actions, rewards, next_obses, not_dones_no_max, same_episode_obs, None, None, None, None
+        return obses, actions, rewards, next_obses, not_dones_no_max, None
+        # return obses, actions, rewards, next_obses, not_dones_no_max, self.same_episode_obs, None, None, None, None
 
     def sample_drq(self, batch_size):
         idxs = np.random.randint(0,
@@ -160,10 +161,10 @@ class ReplayBuffer(object):
                     [j for j in range(self.capacity if self.full else self.idx) if
                      j not in [sample_idx - 1, sample_idx, sample_idx + 1]])
             idxs_from_same_episode.append(idx_from_same_episode)
-        same_episode_obs = torch.as_tensor(self.next_obses[idxs_from_same_episode], device=self.device).float()
-        same_episode_obs = self.aug_trans(same_episode_obs)
+        self.same_episode_obs = torch.as_tensor(self.next_obses[idxs_from_same_episode], device=self.device).float()
+        self.same_episode_obs = self.aug_trans(self.same_episode_obs)
 
-        return obses, actions, rewards, next_obses, not_dones_no_max, obses_aug, same_episode_obs
+        return obses, actions, rewards, next_obses, not_dones_no_max, obses_aug, self.same_episode_obs
 
     def sample_svea_cmid(self, batch_size):
         idxs = np.random.randint(1,

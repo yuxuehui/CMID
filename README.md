@@ -1,3 +1,10 @@
+# Modified on 13 Sep 2023
+For implement of SAC in CartPole-swingup (feature observation space), you can run the code uing the configuration specified in `arguments.py` with:
+```(python)
+python train_copy.py
+```
+
+
 # Conditional Mutual Information for Disentanglement
 
 This is the implementation of Conditional Mutual Information for Disentanglement (CMID) from the paper 
