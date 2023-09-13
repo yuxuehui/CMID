@@ -6,7 +6,7 @@ def parse_args():
     # environment
     parser.add_argument('--domain_name', default='cartpole')
     parser.add_argument('--task_name', default='swingup')
-    parser.add_argument('--exp_name', default='cartpole_damping_1000000')
+    parser.add_argument('--exp_name', default='cartpole_damping_1000000_2')
     parser.add_argument('--episode_length', default=1000, type=int)
     parser.add_argument('--device', default="cpu", type=str)
     parser.add_argument('--seed', default=0, type=int)

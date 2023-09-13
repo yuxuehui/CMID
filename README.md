@@ -4,6 +4,8 @@ For implement of SAC in CartPole-swingup (feature observation space), you can ru
 python train_copy.py
 ```
 
+This project's remit is to test the potential failure of changing damping of hinge, by switching CartPole_A with damping 2e-9 to CartPole_B with damping 2e-5.
+
 
 # Conditional Mutual Information for Disentanglement
 
