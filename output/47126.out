@@ -1,0 +1,9 @@
+workspace: /scratch/yxue/CMID/runs/cartpole_damping_1000/sac/0
+| [32meval[0m  | E: 0 | S: 0 | R: 0.6777
+Switching to test env
+| [32meval[0m  | E: 4 | S: 4000 | R: 0.6678
+Change envA => envB
+| [33mtrain[0m | E: 5 | S: 0 | R: 23.2564 | D: 00.0 s | BR: 0.2918 | ALOSS: 0.3445 | CLOSS: 0.6633 | TLOSS: -0.1780 | TVAL: 0.1000 | AENT: -2.7804
+| [32meval[0m  | E: 0 | S: 0 | R: 38.6612
+Switching to test env
+| [32meval[0m  | E: 4 | S: 4000 | R: 38.8420

@@ -148,7 +148,7 @@ class Workspace(object):
         self.logger.log('eval/episode_reward', average_episode_reward, self.step)
         self.logger.dump(self.step)
 
-    def run(self):
+    def run(self, initial_trans=True):
         episode, episode_reward, episode_step, done = 0, 0, 1, True
         total_num_steps = self.cfg.num_train_steps + self.cfg.num_test_steps
         start_time = time.time()
@@ -167,14 +167,7 @@ class Workspace(object):
                     self.evaluate()
 
                 self.logger.log('train/episode_reward', episode_reward, self.step)
-
-                # if self.envs:
-                #     object = np.random.choice(range(len(self.envs)))
-                #     self.env = self.envs[object]
-                # if self.cfg.correlated_with_colour:     
-                #     self.current_colour = eval(np.random.choice(["self.colourA", "self.colourB"], p=self.probabilities[object]))
-                #     obs = self.env.reset(colour=self.current_colour)
-                # else:       
+    
                 obs = self.env.reset()
                 prev_obs = obs.copy()
 
@@ -186,7 +179,7 @@ class Workspace(object):
                 self.logger.log('train/episode', episode, self.step)
 
             # sample action for data collection
-            if self.step < self.cfg.num_seed_steps:
+            if self.step < self.cfg.num_seed_steps and initial_trans:
                 action = self.env.action_space.sample()
             else:
                 with utils.eval_mode(self.agent):
@@ -196,6 +189,9 @@ class Workspace(object):
             if self.step >= self.cfg.num_seed_steps:
                 for _ in range(self.cfg.num_train_iters):
                     self.agent.update(self.replay_buffer, self.logger, self.step)
+            elif not initial_trans:
+                for _ in range(self.cfg.num_train_iters):
+                    self.agent.update(self.replay_buffer, self.logger, self.step)
 
             if self.step > 0 and self.step % self.cfg.save_freq == 0:
                 saveables = {
@@ -203,10 +199,6 @@ class Workspace(object):
                     "critic": self.agent.critic.state_dict(),
                     "critic_target": self.agent.critic_target.state_dict()
                 }
-                if self.cfg.algorithm == "svea_cmid":
-                    saveables["cmid_discriminator"] = self.agent.cmid_discriminator.state_dict()
-                elif self.cfg.algorithm == "svea_ted":
-                    saveables["ted_classifier"] = self.agent.ted_classifier.state_dict()
                 save_at = os.path.join(self.save_dir, f"env_step{self.step * self.cfg.action_repeat}")
                 os.makedirs(save_at, exist_ok=True)
                 torch.save(saveables, os.path.join(save_at, "models.pt"))
@@ -241,7 +233,7 @@ def main(cfg):
     # switch to envB
     workspace.env = workspace.envB
     workspace.step = 0
-    workspace.run()
+    workspace.run(initial_trans = False)
 
 
 if __name__ == '__main__':

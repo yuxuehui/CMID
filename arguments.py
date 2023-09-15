@@ -6,7 +6,7 @@ def parse_args():
     # environment
     parser.add_argument('--domain_name', default='cartpole')
     parser.add_argument('--task_name', default='swingup')
-    parser.add_argument('--exp_name', default='cartpole_damping_1000000_2')
+    parser.add_argument('--exp_name', default='cartpole_damping_10000_ar8')
     parser.add_argument('--episode_length', default=1000, type=int)
     parser.add_argument('--device', default="cpu", type=str)
     parser.add_argument('--seed', default=0, type=int)
@@ -18,8 +18,8 @@ def parse_args():
 
     # train
     parser.add_argument('--algorithm', default='sac', type=str)
-    parser.add_argument('--action_repeat', default=4, type=int)
-    parser.add_argument('--num_train_steps', default=1000000, type=int)
+    parser.add_argument('--action_repeat', default=8, type=int)
+    parser.add_argument('--num_train_steps', default=50000, type=int)
     parser.add_argument('--num_test_steps', default=0, type=int)
     parser.add_argument('--num_train_iters', default=1, type=int)
     parser.add_argument('--replay_buffer_capacity', default=100000, type=int)
@@ -31,12 +31,12 @@ def parse_args():
     parser.add_argument('--image_pad', default=4, type=int)
 
     # eval
-    parser.add_argument('--eval_freq', default=1000, type=int)
+    parser.add_argument('--eval_freq', default=100, type=int)
     parser.add_argument('--num_eval_episodes', default=10, type=int)
 
     # log
     parser.add_argument('--log_freq', default=1000, type=int)
-    parser.add_argument('--save_freq', default=250000, type=int)
+    parser.add_argument('--save_freq', default=1000, type=int)
     parser.add_argument('--log_dir', default='runs', type=str)
     parser.add_argument('--save_video', default=False, action='store_true')
 
