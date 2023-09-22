@@ -1,0 +1,3 @@
+/scratch/yxue/miniconda3/envs/dmcontrol/lib/python3.9/site-packages/glfw/__init__.py:916: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+  warnings.warn(message, GLFWError)
+slurmstepd-agents2: error: *** JOB 47350 ON agents2 CANCELLED AT 2023-09-22T06:42:32 DUE TO TIME LIMIT ***

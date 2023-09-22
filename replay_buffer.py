@@ -91,10 +91,10 @@ class ReplayBuffer(object):
         obses_aug = torch.as_tensor(obses_aug, device=self.device).float()
         next_obses_aug = torch.as_tensor(next_obses_aug, device=self.device).float()
 
-        obses = self.aug_trans(obses)
-        next_obses = self.aug_trans(next_obses)
-        obses_aug = self.aug_trans(obses_aug)
-        next_obses_aug = self.aug_trans(next_obses_aug)
+        # obses = self.aug_trans(obses)
+        # next_obses = self.aug_trans(next_obses)
+        # obses_aug = self.aug_trans(obses_aug)
+        # next_obses_aug = self.aug_trans(next_obses_aug)
 
         return obses, actions, rewards, next_obses, not_dones_no_max, obses_aug, next_obses_aug
 

@@ -5,8 +5,18 @@ plt.rcParams['font.sans-serif']=['Arial']#如果要显示中文字体，则在�
 plt.rcParams['axes.unicode_minus']=False#显示负号
 import os
 
-out_file_name = ["/scratch/yxue/CMID/runs/cartpole_damping_100000_ar8/sac/0/eval.csv", 
-                    "/scratch/yxue/CMID/runs/cartpole_damping_100000_ar8/sac/0/train.csv"
+out_file_name = ["/scratch/yxue/CMID/runs/cartpole_damping_10000_ar8/sac/0/eval.csv", 
+                    "/scratch/yxue/CMID/runs/cartpole_damping_10000_ar8/sac/0/train.csv",
+                    "/scratch/yxue/CMID/runs/cartpole_damping_10000_ar8_seed1/sac/1/eval.csv",
+                    "/scratch/yxue/CMID/runs/cartpole_damping_10000_ar8_seed1/sac/1/eval.csv",
+                    "/scratch/yxue/CMID/runs/cartpole_damping_10000_ar8_seed2/sac/2/eval.csv",
+                    "/scratch/yxue/CMID/runs/cartpole_damping_10000_ar8_seed2/sac/2/train.csv",
+                    "/scratch/yxue/CMID/runs/cartpole_damping_10000_ar8_seed3/sac/3/eval.csv",
+                    "/scratch/yxue/CMID/runs/cartpole_damping_10000_ar8_seed3/sac/3/train.csv",
+                    "/scratch/yxue/CMID/runs/cartpole_damping_10000_ar8_seed4/sac/4/eval.csv",
+                    "/scratch/yxue/CMID/runs/cartpole_damping_10000_ar8_seed4/sac/4/train.csv",
+                    "/scratch/yxue/CMID/runs/cartpole_damping_10000_ar8_seed10/sac/10/eval.csv",
+                    "/scratch/yxue/CMID/runs/cartpole_damping_10000_ar8_seed10/sac/10/train.csv"
                 ]
 
 for file_index in range(len(out_file_name)):

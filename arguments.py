@@ -5,11 +5,12 @@ def parse_args():
 
     # environment
     parser.add_argument('--domain_name', default='cartpole')
+    parser.add_argument('--description', default='')
     parser.add_argument('--task_name', default='swingup')
-    parser.add_argument('--exp_name', default='cartpole_damping_10000_ar8')
+    parser.add_argument('--exp_name', default='cartpole_damping_10000_ar8_seed10')
     parser.add_argument('--episode_length', default=1000, type=int)
     parser.add_argument('--device', default="cpu", type=str)
-    parser.add_argument('--seed', default=0, type=int)
+    parser.add_argument('--seed', default=10, type=int)
 
     # correlation
     parser.add_argument('--correlated_with_colour', default="False", type=str)
@@ -19,7 +20,7 @@ def parse_args():
     # train
     parser.add_argument('--algorithm', default='sac', type=str)
     parser.add_argument('--action_repeat', default=8, type=int)
-    parser.add_argument('--num_train_steps', default=50000, type=int)
+    parser.add_argument('--num_train_steps', default=30000, type=int)
     parser.add_argument('--num_test_steps', default=0, type=int)
     parser.add_argument('--num_train_iters', default=1, type=int)
     parser.add_argument('--replay_buffer_capacity', default=100000, type=int)

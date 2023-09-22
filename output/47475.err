@@ -1,0 +1,2 @@
+/scratch/yxue/miniconda3/envs/dmcontrol/lib/python3.9/site-packages/glfw/__init__.py:916: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+  warnings.warn(message, GLFWError)

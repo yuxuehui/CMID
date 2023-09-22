@@ -35,10 +35,10 @@
         <geom name="pelvis" fromto="0 0 0 0 0 -.15" size="0.065"/>
         <body name="thigh" pos="0 0 -.2">
           <joint name="hip" range="-170 10"/>
-          <geom name="thigh" fromto="0 0 0 0 0 -.28" size="0.04" mass="1.43"/>
+          <geom name="thigh" fromto="0 0 0 0 0 -.33" size="0.04" mass="5.00"/> 
           <body name="calf" pos="0 0 -.28">
             <joint name="knee" range="5 150"/>
-            <geom name="calf" fromto="0 0 0 0 0 -.37" size="0.03" mass="1.22"/>
+            <geom name="calf" fromto="0 0 0 0 0 -.32" size="0.03" mass="5.00"/>
             <body name="foot" pos="0 0 -.37">
               <joint name="ankle" range="-45 45"/>
               <geom name="foot" fromto="-.08 0 0 .17 0 0" size="0.04"/>

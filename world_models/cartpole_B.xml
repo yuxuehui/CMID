@@ -9,7 +9,7 @@
 
   <default>
     <default class="pole">
-      <joint type="hinge" axis="0 1 0"  damping="2e-1"/>
+      <joint type="hinge" axis="0 1 0"  damping="2e-2"/>
       <geom type="capsule" fromto="0 0 0 0 0 1" size="0.045" material="self" mass=".1"/>
     </default>
   </default>
@@ -35,3 +35,4 @@
     <motor name="slide" joint="slider" gear="10" ctrllimited="true" ctrlrange="-1 1" />
   </actuator>
 </mujoco>
+

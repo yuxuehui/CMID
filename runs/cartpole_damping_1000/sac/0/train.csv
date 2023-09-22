@@ -1,2 +1,0 @@
-actor_entropy,actor_loss,actor_target_entropy,alpha_loss,alpha_value,batch_reward,critic_loss,episode,episode_reward,step
--2.7803759574890137,0.34449949860572815,-1.0,-0.1780376136302948,0.10000000000000002,0.2917930334806442,0.6632882952690125,5.0,23.256352304721158,0
